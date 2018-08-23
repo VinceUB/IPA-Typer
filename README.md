@@ -2,7 +2,7 @@ Disclaimer: This program is not finished yet, and as such, many features are yet
 
 # Vincent's IPA typer
 
-This nifty program is supposed to get a coded (abbreviated) message as an input, and output the corresponding symbol
+This program is supposed to get a coded (abbreviated) message as an input, and output the corresponding symbol
 
 ## How to run the program
 
