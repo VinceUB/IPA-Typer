@@ -88,3 +88,5 @@ If you want to write multiple symbols in one input, just separate them with spac
 | :------------- | :------------- |
 | Rounded       | r      |
 | Unrounded   | ur  |
+
+Example: `v.ld.f nc.f.u v.a.n vl.a.f om.f.u v.a.n vl.a.p` will return `vɪnsɛnt`, my name
