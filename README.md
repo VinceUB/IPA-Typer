@@ -1,5 +1,3 @@
-Disclaimer: This program is not finished yet, and as such, many features are yet to be implimented
-
 # Vincent's IPA typer
 
 This program is supposed to get a coded (abbreviated) message as an input, and output the corresponding symbol
