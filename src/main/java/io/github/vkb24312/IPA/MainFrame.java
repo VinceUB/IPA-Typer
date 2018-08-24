@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 class MainFrame extends JFrame {
+    //region The components
     private JPanel panel;
     private JPanel inputPanel;
         private JLabel inputFieldLabel;
@@ -17,6 +18,7 @@ class MainFrame extends JFrame {
     private JPanel outputPanel;
         private JLabel outputFieldLabel;
         private JTextField outputField;
+    //endregion
 
     MainFrame (String title, Dimension size){
         super(title);
@@ -24,10 +26,13 @@ class MainFrame extends JFrame {
         setSize(size);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        //region Main panel setup
         panel = new JPanel(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         add(panel);
+        //endregion
 
+        //region Input panel setup
         inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.add(inputPanel);
         submitPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -39,13 +44,17 @@ class MainFrame extends JFrame {
         inputField = new JTextField(20);
         inputPanel.add(inputFieldLabel);
         inputPanel.add(inputField);
+        //endregion
 
+        //region Output panel setup
         outputFieldLabel = new JLabel("The output will appear here");
         outputField = new JTextField(20);
         outputField.setEditable(false);
         outputPanel.add(outputFieldLabel);
         outputPanel.add(outputField);
+        //endregion
 
+        //region Submit panel setup
         submit = new JButton("Button");
         submit.addActionListener(l -> {
             String[] inputs = inputField.getText().toLowerCase().split(" ");
@@ -62,13 +71,12 @@ class MainFrame extends JFrame {
                 public void mouseClicked(MouseEvent e) {
                     StringSelection string = new StringSelection(outputField.getText());
                     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clipboard.setContents(string, null);
+                    clipboard.setContents(string, null); //FIXME: Doesn't copy to clipboard.
                     System.out.println("Copied " + outputField.getText());
                 }
             });
         });
         submitPanel.add(submit);
-
-        setVisible(true);
+        //endregion
     }
 }

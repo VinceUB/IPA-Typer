@@ -1,8 +1,7 @@
 package io.github.vkb24312.IPA;
 
+import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-
 import java.util.Scanner;
 
 
@@ -13,10 +12,11 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String... args) {
-        if(GraphicsEnvironment.isHeadless()) {
+        if(GraphicsEnvironment.isHeadless() || (args.length>0 && args[0].equals("console"))) {
             System.out.println(fromConsole());
         } else {
-            new MainFrame("IPA typer", new Dimension(300, 300));
+            JFrame frame = new MainFrame("IPA typer", new Dimension(300, 300));
+            frame.setVisible(true);
         }
     }
 
@@ -25,17 +25,21 @@ public class Main {
      * @return The corresponding IPA symbol
      */
     private static String fromConsole() {
+        //region Get input
         Scanner s = new Scanner(System.in);
         s.useDelimiter("\n");
         System.out.println(
             "Please enter the symbols in code form (see readme), separated by spaces");
+        //endregion
 
         String[] input = s.next().split(" ");
         StringBuilder output = new StringBuilder("\u0000");
 
         for (String in : input) {
             try {
-                output.append(IPAConverter.symbol(IPAConverter.toKey(in)));
+                String symbol = IPAConverter.symbol(IPAConverter.toKey(in));
+                if (symbol == null) output.append("*");
+                else output.append(symbol);
             } catch (IllegalArgumentException e) {
                 output.append("*");
             }

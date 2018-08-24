@@ -4,11 +4,20 @@ This program is supposed to get a coded (abbreviated) message as an input, and o
 
 ## How to run the program
 
-The GUI is coming soon, but for now you have to use the command prompt.
+Perquisites: You must have at least Java 8 installed
 
-1. Open the command prompt (Windows) or terminal (Mac & Linux)
-2. Write ```cd <program directory>```
-3. Write ```java -jar <jarfile name>.jar```
+If you want to do it like a normal person, just double press the jarfile downloaded.
+
+If you:
+1. Don't have graphics
+2. Have something against everything graphical
+3. Are a nerd
+
+You should:
+1. Open the command prompt (Windows) or Terminal (Mac & Linux)
+2. If you have graphics available (or like doing things the complicated way), type `java -jar <full path of the jarfile>/<the jarfile>.jar console`
+3. Otherwise, type `java -jar <full path of the jarfile>/<the jarfile>.jar`
+4. Press enter
 
 ## How to correctly input
 
@@ -26,7 +35,7 @@ If you want to write multiple symbols in one input, just separate them with spac
 ### Consonants
 #### Voicing
 | Full name | Abbreviation |
-| :-------- | :----------- 
+| :-------- | :-----------
 | Voiced | v |
 | Voiceless | vl |
 #### Place of Articulation
@@ -46,7 +55,7 @@ If you want to write multiple symbols in one input, just separate them with spac
 | Labial-Velar   | lv             |
 | Labial-Palatal | lp             |
 | Epiglottal     | eg             |
-| Aleolo-Palatal | ap             | 
+| Aleolo-Palatal | ap             |
 #### Manner of articulation
 | Full name | Abbreviation     |
 | :------------- | :------------- |
