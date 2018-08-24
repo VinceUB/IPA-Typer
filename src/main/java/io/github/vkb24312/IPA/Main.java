@@ -1,7 +1,5 @@
 package io.github.vkb24312.IPA;
 
-import org.jsoup.HttpStatusException;
-
 import java.io.IOException;
 
 import java.util.Scanner;
@@ -13,24 +11,14 @@ import java.util.Scanner;
  * I.E., "v.b.p" returns b, the symbol for the Voiced Bilabial Plosive
  */
 public class Main {
-    public static void main(String... args) throws IOException {
+    public static void main(String... args) {
         if (args.length > 0) {
             StringBuilder output = new StringBuilder("\u0000");
 
             for (String in : args) {
                 try {
                     output.append(IPAConverter.symbol(IPAConverter.toKey(in)));
-                }/* catch (HttpStatusException e) {
-                    System.out.println("Http Status Error " +
-                        e.getStatusCode() + ", from website" + e.getUrl());
-
-                    if (e.getStatusCode() == 404) {
-                        System.out.println(IPAConverter.extend(in) +
-                            " probably isn't a real symbol");
-                    }
-
-                    output.append("*");
-                } */catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     output.append("*");
                 }
             }
@@ -45,7 +33,7 @@ public class Main {
      *
      * @return The corresponding IPA symbol
      */
-    private static String fromConsole() throws IOException {
+    private static String fromConsole() {
         Scanner s = new Scanner(System.in);
         s.useDelimiter("\n");
         System.out.println(
@@ -57,17 +45,7 @@ public class Main {
         for (String in : input) {
             try {
                 output.append(IPAConverter.symbol(IPAConverter.toKey(in)));
-            } /*catch (HttpStatusException e) {
-                System.out.println("Http Status Error " + e.getStatusCode() +
-                    ", from website" + e.getUrl());
-
-                if (e.getStatusCode() == 404) {
-                    System.out.println(IPAConverter.extend(in) +
-                        " probably isn't a real symbol");
-                }
-
-                output.append("*");
-            } */catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 output.append("*");
             }
         }

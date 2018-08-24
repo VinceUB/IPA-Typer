@@ -1,10 +1,5 @@
 package io.github.vkb24312.IPA;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
-
 class IPAConverter {
 
     static int[] toKey(String input){
@@ -87,9 +82,9 @@ class IPAConverter {
     }
 
     private final static String[] placeShortcuts = {"b", "ld", "d", "a", "pa", "r", "p", "v", "u", "ph", "g", "lv", "lp", "eg", "ap"};
-    final static String[] placeFull = {"bilabial","labiodental","dental","alveolar","postalveolar","retroflex","palatal","velar","uvular","pharyngeal","glottal","labial-velar","labial-palatal","epiglottal","alveolo-palatal"};
+    //final static String[] placeFull = {"bilabial","labiodental","dental","alveolar","postalveolar","retroflex","palatal","velar","uvular","pharyngeal","glottal","labial-velar","labial-palatal","epiglottal","alveolo-palatal"};
     private final static String[] mannerShortcuts = {"p", "n", "t", "fl", "f", "lf", "a", "la", "lfl", "s"};
-    final static String[] mannerFull = {"plosive", "nasal", "trill", "flap", "fricative", "lateral fricative", "approximant", "lateral approximant", "lateral flap", "sibilant"};
+    //final static String[] mannerFull = {"plosive", "nasal", "trill", "flap", "fricative", "lateral fricative", "approximant", "lateral approximant", "lateral flap", "sibilant"};
     private final static String[][][] ipaTableConsonants = {{{"b", "p"}, {"m", "m̥"}, {"ʙ", "ʙ̥"}, {null, null}, {"β", "ɸ"}, {null, null}, {"β", "ɸ"}, {null, null}, {null, null}, {null, null}, },
             {{"b̪", "p̪"}, {"ɱ", "ɱ"}, {null, null}, {null, null}, {"v", "f"}, {null, null}, {"ʋ", "ʋ̥"}, {null, null}, {null, null}, {null, null}, },
             {{"d", "t"}, {"n", "n̥"}, {"r", null}, {"ɾ", "ɾ̥"}, {"ð", "θ"}, {"ɮ", "ɬ"}, {null, "θ"}, {"l", "l̥"}, {"ɺ", null}, {"z", "s"}, },
@@ -105,31 +100,16 @@ class IPAConverter {
             {{null, null}, {null, null}, {null, null}, {null, null}, {null, null}, {null, null}, {"ɥ", "ɥ̊"}, {null, null}, {null, null}, {null, null}, },
             {{"ʡ", null}, {null, null}, {"ʢ", "ʜ"}, {null, null}, {"ʢ", "ʜ"}, {null, null}, {null, null}, {null, null}, {null, null}, {null, null}, },
             {{"ɕ", "ɕ"}, {null, "ɲ̊"}, {null, null}, {null, null}, {"ʑ", "ɕ"}, {null, "ʎ̝̊"}, {null, null}, {null, "ʎ̥"}, {null, null}, {"ʑ", "ɕ"}}};
-    static String voicing(boolean isVoiced){
-        if(isVoiced) return "voiced";
-        else return "voiceless";
-    }
 
-    final static String[] heightFull = new String[]{"close", "near-close", "close-mid", "mid", "open-mid", "near-open", "open"};
+    //final static String[] heightFull = new String[]{"close", "near-close", "close-mid", "mid", "open-mid", "near-open", "open"};
     private final static String[] heightShortcuts = new String[]{"c", "nc", "cm", "m", "om", "no", "o"};
-    final static String[] backnessFull = new String[]{"front", "central", "back"};
+    //final static String[] backnessFull = new String[]{"front", "central", "back"};
     private final static String[] backnessShortcuts = new String[]{"f", "c", "b"};
     private final static String[][][] ipaTableVowels = new String[][][]{
             {{"i", "y"}, {"ɪ", "ʏ"}, {"e", "ø"}, {"e̞", "ø̞"}, {"ɛ", "œ"}, {"æ", null}, {"a", "ɶ"}},
             {{"ɨ", "ʉ"}, {"ɪ̈", "ʊ̈"}, {"ɘ", "ɵ"}, {"ə", "ə"}, {"ɜ", "ɞ"}, {"ɐ", "ɐ"}, {"ä", "ɒ̈"}},
             {{"ɯ", "u"}, {"ɯ̽", "ʊ"}, {"ɤ", "o"}, {"ɤ̞", "o̞"}, {"ʌ", "ɔ"}, {null, null}, {"ɑ", "ɒ"}}
     };
-
-    /**
-     *
-     * @param input The input string, delimited by spaces, in the order: Voicing, Place of Articulation, Manner of Articulation
-     * @return The symbol corresponding to the input
-     */
-    static String symbol(String input) throws IOException { //To be used for an online search
-        input = input.replaceAll(" ", "_");
-        Document page = Jsoup.connect("https://en.wikipedia.org/wiki/"+input).get();
-        return Jsoup.parse(page.getElementsByTag("th").html()).getElementsByClass("IPA").first().text();
-    }
 
     /**
      * @param input The code numbers in the following order: Place of articulation, Manner of articulation, Voicing
@@ -142,6 +122,3 @@ class IPAConverter {
         } else return ipaTableVowels[input[2]][input[1]][input[3]];
     }
 }
-
-
-//TODO: Make it work with vowels
