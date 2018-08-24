@@ -1,5 +1,6 @@
 package io.github.vkb24312.IPA;
 
+import java.awt.*;
 import java.io.IOException;
 
 import java.util.Scanner;
@@ -12,7 +13,11 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String... args) {
-        System.out.println(fromConsole());
+        if(GraphicsEnvironment.isHeadless()) {
+            System.out.println(fromConsole());
+        } else {
+            new MainFrame("IPA typer", new Dimension(300, 300));
+        }
     }
 
     /**
