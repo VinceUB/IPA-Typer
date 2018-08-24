@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -42,6 +44,10 @@ class MainFrame extends JFrame {
 
         inputFieldLabel = new JLabel("Write your input in the code here (see README)");
         inputField = new JTextField(20);
+        inputField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) { if(e.getKeyChar()==KeyEvent.VK_ENTER) submit.doClick(); }
+        });
         inputPanel.add(inputFieldLabel);
         inputPanel.add(inputField);
         //endregion
@@ -55,7 +61,7 @@ class MainFrame extends JFrame {
         //endregion
 
         //region Submit panel setup
-        submit = new JButton("Button");
+        submit = new JButton("Submit");
         submit.addActionListener(l -> {
             String[] inputs = inputField.getText().toLowerCase().split(" ");
             StringBuilder output = new StringBuilder("\u0000");
