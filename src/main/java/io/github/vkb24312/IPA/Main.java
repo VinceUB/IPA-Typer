@@ -12,21 +12,7 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String... args) {
-        if (args.length > 0) {
-            StringBuilder output = new StringBuilder("\u0000");
-
-            for (String in : args) {
-                try {
-                    output.append(IPAConverter.symbol(IPAConverter.toKey(in)));
-                } catch (IllegalArgumentException e) {
-                    output.append("*");
-                }
-            }
-
-            System.out.println(output);
-        } else {
-            System.out.println(fromConsole());
-        }
+        System.out.println(fromConsole());
     }
 
     /**
