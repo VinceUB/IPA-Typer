@@ -79,9 +79,7 @@ If you want to write multiple symbols in one input, just separate them with spac
 | Full name | Abbreviation |
 | :------------- | :------------- |
 | Front | f |
-| Near-Front   | nf  |
 | Central   | c  |
-| Near-Back   | nb  |
 | Back   | b  |
 #### Roundedness
 | Full name | Abbreviation     |
