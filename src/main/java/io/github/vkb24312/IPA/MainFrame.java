@@ -2,12 +2,8 @@ package io.github.vkb24312.IPA;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 class MainFrame extends JFrame {
     //region The components
@@ -71,16 +67,7 @@ class MainFrame extends JFrame {
             }
 
             outputField.setText(output.toString());
-            outputFieldLabel.setText("Press the text to copy");
-            outputField.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    StringSelection string = new StringSelection(outputField.getText());
-                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                    clipboard.setContents(string, null); //FIXME: Doesn't copy to clipboard.
-                    System.out.println("Copied " + outputField.getText());
-                }
-            });
+            outputFieldLabel.setText("Double click text to select");
         });
         submitPanel.add(submit);
         //endregion

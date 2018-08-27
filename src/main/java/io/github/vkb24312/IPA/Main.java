@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * This is meant to convert an abbreviated message to an IPA symbol.
  *
- * I.E., "v.b.p" returns b, the symbol for the Voiced Bilabial Plosive
+ * E.G., "v.b.p" returns b, the symbol for the Voiced Bilabial Plosive
  */
 public class Main {
     public static void main(String... args) {
