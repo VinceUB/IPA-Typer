@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 class MainFrame extends JFrame {
     //region The components
@@ -31,9 +32,10 @@ class MainFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //region Font setup
-        File fontFile = new File(getClass().getResource("/fonts/DejaVuSans.ttf").getFile().replaceAll("%20", " "));
+        InputStream fontInputStream = getClass().getClassLoader().getResourceAsStream("fonts/DejaVuSans.ttf");
+
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(11.5f);
+            font = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(11.5f);
 
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
@@ -78,9 +80,6 @@ class MainFrame extends JFrame {
         outputFieldLabel = new JLabel("The output will appear here");
         outputField = new JTextField(20);
         outputField.setEditable(false);
-
-
-        System.out.println(fontFile.exists());
 
         outputPanel.add(outputFieldLabel);
         outputPanel.add(outputField);
