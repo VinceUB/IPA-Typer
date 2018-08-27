@@ -1,5 +1,7 @@
 package io.github.vkb24312.IPA;
 
+import java.util.Arrays;
+
 class IPAConverter {
 
     /**
@@ -7,7 +9,8 @@ class IPAConverter {
      * @return The key to be used in the {@link io.github.vkb24312.IPA.IPAConverter#symbol} method
      */
     static int[] toKey(String input){
-        //Determine if vowel or consonant
+        if(input.split("\\.").length==2) return toSpecialKey(input);
+        //Determine if vowel, consonant or special symbol
         if(input.toLowerCase().split("\\.", 3)[0].equals("v") || input.toLowerCase().split("\\.", 3)[0].equals("vl")){
             return toConsonantKey(input);
         } else if(input.toLowerCase().split("\\.", 3)[2].equals("r") || input.toLowerCase().split("\\.", 3)[2].equals("u")) {
@@ -59,7 +62,7 @@ class IPAConverter {
         //In order from 0: Bilabial, Labiodental, Dental, Alveolar, Postalveolar, Retroflex, Palatal, Velar, Uvular, Pharyngeal, Glottal, Labial-Velar, Labial-Palatal, Epiglottal, Alveo-Palatal
 
         int manner = -1; //The manner of articulation
-        // In order from 0: Plosive, Nasal, Trill, Tap/Flap, Fricative, Lateral Fricative, Approximant, Lateral Approximant, Lateral Flap, Sibilant
+        // In order from 0: Plosive, Nasal, Trill, Tap/Flap, Fricative, Lateral Fricative, Approximant, Lateral Approximant, Lateral Flap
 
         String[] parts = input.toLowerCase().split("\\.", 3);
 
@@ -83,31 +86,65 @@ class IPAConverter {
             if(parts[2].equals(mannerShortcuts[i])) manner = i;
         }
         if(manner<0) throw new IllegalArgumentException("Manner \"" + parts[2] + "\" is not valid. Please see readme");
-        else if(manner==4 && place==3) manner = 9; //If alveolar fricative, rename to alveolar sibilant
 
         return new int[]{0, place, manner, voicing};
+    }
+
+    private static int[] toSpecialKey(String input){
+        int[] out = new int[3];
+        out[0] = 2;
+        String[] parts = input.toLowerCase().split("\\.", 2);
+
+        switch (parts[0]) {
+            case "s":
+                out[1] = 0;
+
+                for (int i = 0; i < suprasegmentalsShortcuts.length; i++) {
+                    if (parts[1].equals(suprasegmentalsShortcuts[i])) out[2] = i;
+                }
+                break;
+            case "d":
+                out[1] = 1;
+
+                for (int i = 0; i < superscriptsShortcuts.length; i++) {
+                    if (parts[1].equals(superscriptsShortcuts[i])) out[2] = i;
+                }
+                break;
+            default:
+                out[1] = 2;
+
+                for (int i = 0; i < diacriticsShortcuts.length; i++) {
+                    if (parts[1].equals(diacriticsShortcuts[i])) out[2] = i;
+                }
+
+                break;
+        }
+
+        return out;
     }
 
     //region Consonants
     private final static String[] placeShortcuts = {"b", "ld", "d", "a", "pa", "r", "p", "v", "u", "ph", "g", "lv", "lp", "eg", "ap"};
     //final static String[] placeFull = {"bilabial","labiodental","dental","alveolar","postalveolar","retroflex","palatal","velar","uvular","pharyngeal","glottal","labial-velar","labial-palatal","epiglottal","alveolo-palatal"};
-    private final static String[] mannerShortcuts = {"p", "n", "t", "fl", "f", "lf", "a", "la", "lfl", "s"};
-    //final static String[] mannerFull = {"plosive", "nasal", "trill", "flap", "fricative", "lateral fricative", "approximant", "lateral approximant", "lateral flap", "sibilant"};
-    private final static String[][][] ipaTableConsonants = {{{"b", "p"}, {"m", "m̥"}, {"ʙ", "ʙ̥"}, {null, null}, {"β", "ɸ"}, {null, null}, {"β", "ɸ"}, {null, null}, {null, null}, {null, null}, },
-            {{"b̪", "p̪"}, {"ɱ", "ɱ"}, {null, null}, {null, null}, {"v", "f"}, {null, null}, {"ʋ", "ʋ̥"}, {null, null}, {null, null}, {null, null}, },
-            {{"d", "t"}, {"n", "n̥"}, {"r", null}, {"ɾ", "ɾ̥"}, {"ð", "θ"}, {"ɮ", "ɬ"}, {null, "θ"}, {"l", "l̥"}, {"ɺ", null}, {"z", "s"}, },
-            {{"d", "t"}, {"n", "n̥"}, {"r", "r̥"}, {"ɾ", "ɾ̥"}, {"z", "s"}, {"ɮ", "ɬ"}, {"ɹ", "ɹ̥"}, {"l", "l̥"}, {"ɺ", null}, {"z", "s"}, },
-            {{null, null}, {"n", "n̥"}, {"r", null}, {"ɾ", "ɾ̥"}, {"ʒ", "ʃ"}, {null, null}, {null, "ɹ̥"}, {"l", "l̥"}, {"ɺ", null}, {"ʒ", "ʃ"}, },
-            {{"ɖ", "ʈ"}, {"ɳ", "ɳ̊"}, {"ɽ͡r", "ɽ͡r̥"}, {"ɽ", "ɽ̊"}, {"ʐ", "ʂ"}, {"ɭ˔", "ɭ̊˔"}, {"ɻ", "ɻ̊"}, {"ɭ", "ɭ̊"}, {"ɭ̆", null}, {"ʐ", "ʂ"}, },
-            {{"ɟ", "c"}, {"ɲ", "ɲ̊"}, {null, null}, {null, null}, {"ʝ", "ç"}, {"ʎ̝", "ʎ̝̊"}, {"j", "j̊"}, {"ʎ", "ʎ̥"}, {null, null}, {"ʒ", "ʃ"}, },
-            {{"ɡ", "k"}, {"ŋ", "ŋ̊"}, {null, null}, {null, null}, {"ɣ", "x"}, {"ʟ̝", "ʟ̝̊"}, {"ɰ", "ɰ̊"}, {"ʟ", "ʟ̥"}, {"ʟ̆", null}, {null, null}, },
-            {{"ɢ", "q"}, {"ɴ", null}, {"ʀ", "ʀ̥"}, {"ɢ̆", null}, {"ʁ", "χ"}, {null, null}, {"ʁ", null}, {"ʟ̠", null}, {null, null}, {null, null}, },
-            {{null, null}, {null, null}, {"ʢ", "ʜ"}, {null, null}, {"ʕ", "ħ"}, {null, null}, {"ʕ", null}, {null, null}, {null, null}, {null, null}, },
-            {{null, "ʔ"}, {null, null}, {null, null}, {null, null}, {"ɦ", "h"}, {null, null}, {"ʔ̞", "h"}, {null, null}, {null, null}, {null, null}, },
-            {{"ɡ͡b", "k͡p"}, {"ŋ͡m", null}, {null, null}, {null, null}, {null, "ʍ"}, {null, null}, {"w", "ʍ"}, {null, null}, {null, null}, {null, null}, },
-            {{null, null}, {null, null}, {null, null}, {null, null}, {null, null}, {null, null}, {"ɥ", "ɥ̊"}, {null, null}, {null, null}, {null, null}, },
-            {{"ʡ", null}, {null, null}, {"ʢ", "ʜ"}, {null, null}, {"ʢ", "ʜ"}, {null, null}, {null, null}, {null, null}, {null, null}, {null, null}, },
-            {{"ɕ", "ɕ"}, {null, "ɲ̊"}, {null, null}, {null, null}, {"ʑ", "ɕ"}, {null, "ʎ̝̊"}, {null, null}, {null, "ʎ̥"}, {null, null}, {"ʑ", "ɕ"}}};
+    private final static String[] mannerShortcuts = {"p", "n", "t", "fl", "f", "lf", "a", "la", "lfl"};
+    //final static String[] mannerFull = {"plosive", "nasal", "trill", "flap", "fricative", "lateral fricative", "approximant", "lateral approximant", "lateral flap"};
+    private final static char[][][] ipaTableConsonants = new char[][][]{
+        {{'b', 'p'}, {'m', '\u0000'}, {'ʙ', '\u0000'}, {'\u0000', '\u0000'}, {'β', 'ɸ'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'\u0000', '\u0000'}, {'ɱ', '\u0000'}, {'\u0000', '\u0000'}, {'ⱱ', '\u0000'}, {'v', 'f'}, {'\u0000', '\u0000'}, {'ʋ', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'d', 't'}, {'n', '\u0000'}, {'r', '\u0000'}, {'ɾ', '\u0000'}, {'ð', 'θ'}, {'ɮ', 'ɬ'}, {'ɹ', '\u0000'}, {'l', '\u0000'}, {'ɺ', '\u0000'}},
+        {{'d', 't'}, {'n', '\u0000'}, {'r', '\u0000'}, {'ɾ', '\u0000'}, {'z', 's'}, {'ɮ', 'ɬ'}, {'ɹ', '\u0000'}, {'l', '\u0000'}, {'ɺ', '\u0000'}},
+        {{'\u0000', '\u0000'}, {'n', '\u0000'}, {'r', '\u0000'}, {'ɾ', '\u0000'}, {'ʒ', 'ʃ'}, {'ɮ', 'ɬ'}, {'ɹ', '\u0000'}, {'l', '\u0000'}, {'ɺ', '\u0000'}},
+        {{'ɖ', 'ʈ'}, {'ɳ', '\u0000'}, {'\u0000', '\u0000'}, {'ɽ', '\u0000'}, {'ʐ', 'ʂ'}, {'\u0000', '\u0000'}, {'ɻ', '\u0000'}, {'ɭ', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'ɟ', 'c'}, {'ɲ', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'ʝ', 'ç'}, {'\u0000', '\u0000'}, {'j', '\u0000'}, {'ʎ', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'ɡ', 'k'}, {'ŋ', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'ɣ', 'x'}, {'\u0000', '\u0000'}, {'ɰ', '\u0000'}, {'ʟ', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'ɢ', 'q'}, {'ɴ', '\u0000'}, {'ʀ', '\u0000'}, {'\u0000', '\u0000'}, {'ʁ', 'χ'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'ʢ', 'ʜ'}, {'\u0000', '\u0000'}, {'ʕ', 'ħ'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'ʔ', 'ʔ'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'ɦ', 'h'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', 'ʍ'}, {'\u0000', '\u0000'}, {'w', 'ʍ'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'ɥ', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'ʡ', 'ʡ'}, {'\u0000', '\u0000'}, {'ʢ', 'ʜ'}, {'\u0000', '\u0000'}, {'ʢ', 'ʜ'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}},
+        {{'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'ʑ', 'ɕ'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}, {'\u0000', '\u0000'}}
+    };
     //endregion
 
     //region Vowels
@@ -115,21 +152,34 @@ class IPAConverter {
     private final static String[] heightShortcuts = new String[]{"c", "nc", "cm", "m", "om", "no", "o"};
     //final static String[] backnessFull = new String[]{"front", "central", "back"};
     private final static String[] backnessShortcuts = new String[]{"f", "c", "b"};
-    private final static String[][][] ipaTableVowels = new String[][][]{
-            {{"i", "y"}, {"ɪ", "ʏ"}, {"e", "ø"}, {"e̞", "ø̞"}, {"ɛ", "œ"}, {"æ", null}, {"a", "ɶ"}},
-            {{"ɨ", "ʉ"}, {"ɪ̈", "ʊ̈"}, {"ɘ", "ɵ"}, {"ə", "ə"}, {"ɜ", "ɞ"}, {"ɐ", "ɐ"}, {"ä", "ɒ̈"}},
-            {{"ɯ", "u"}, {"ɯ̽", "ʊ"}, {"ɤ", "o"}, {"ɤ̞", "o̞"}, {"ʌ", "ɔ"}, {null, null}, {"ɑ", "ɒ"}}
+    private final static char[][][] ipaTableVowels = new char[][][]{
+            {{'i', 'y'}, {'ɪ', 'ʏ'}, {'e', 'ø'}, {, }, {'ɛ', 'œ'}, {'æ', }, {'a', 'ɶ'}},
+            {{'ɨ', 'ʉ'}, {, }, {'ɘ', 'ɵ'}, {'ə', 'ə'}, {'ɜ', 'ɞ'}, {'ɐ', 'ɐ'}, {, }},
+            {{'ɯ', 'u'}, {'\u0000', 'ʊ'}, {'ɤ', 'o'}, {,}, {'ʌ', 'ɔ'}, {, }, {'ɑ', 'ɒ'}}
     };
+    //endregion
+
+    //region Specials
+    private final static char[][] ipaTableSpecials = new char[][]{
+            {'ˈ', 'ˌ', 'ː', 'ˑ', '̆', '|', '‖', '.', '͜'},
+            {'̥', '̬', '̹', '̜', '̟', '̄', '̈', '̽', '̩', '̯', '˞', '̤', '̰', '̼', '̴', '̝', '̞', '̘', '̙', '̪', '̺', '̻'},
+            {'ʰ', 'ʷ', 'ʲ', 'ˠ', 'ˤ', 'ⁿ', 'ˡ', '̚'}
+    };
+
+    private final static String[] suprasegmentalsShortcuts = new String[]{"sp", "ss", "lo", "hl", "es", "fg", "ig", "sb", "li"};
+    private final static String[] diacriticsShortcuts = new String[]{"vl", "v", "mr", "lr", "ad", "re", "c", "mc", "s", "ns", "rh", "vb", "vc", "ll", "vph", "ra", "lo", "adt", "ret", "d", "a", "l", "n"};
+    private final static String[] superscriptsShortcuts = new String[]{"a", "l", "p", "v", "ph", "nr", "lr", "nor"};
     //endregion
 
     /**
      * @param input The code numbers in the following order: Place of articulation, Manner of articulation, Voicing
      * @return the symbol corresponding to the input
      */
-    static String symbol(int[] input) { //Consults array
-        if(input.length!=4) throw new IllegalArgumentException("There have to be 4 inputs, not " + input.length);
+    static char symbol(int[] input) { //Consults array
         if(input[0]==0) {
             return ipaTableConsonants[input[1]][input[2]][input[3]];
-        } else return ipaTableVowels[input[2]][input[1]][input[3]];
+        } else if(input[0]==1){
+            return ipaTableVowels[input[2]][input[1]][input[3]];
+        } else return ipaTableSpecials[input[1]][input[2]];
     }
 }

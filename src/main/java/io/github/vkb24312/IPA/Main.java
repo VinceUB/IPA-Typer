@@ -15,7 +15,7 @@ public class Main {
         if(GraphicsEnvironment.isHeadless() || (args.length>0 && args[0].equals("console"))) {
             System.out.println(fromConsole());
         } else {
-            JFrame frame = new MainFrame("IPA typer", new Dimension(300, 300));
+            JFrame frame = new MainFrame("IPA typer", new Dimension(400, 300));
             frame.setVisible(true);
         }
     }
@@ -37,8 +37,8 @@ public class Main {
 
         for (String in : input) {
             try {
-                String symbol = IPAConverter.symbol(IPAConverter.toKey(in));
-                if (symbol == null) output.append("*");
+                char symbol = IPAConverter.symbol(IPAConverter.toKey(in));
+                if (symbol == '\u0000') output.append("*");
                 else output.append(symbol);
             } catch (IllegalArgumentException e) {
                 output.append("*");

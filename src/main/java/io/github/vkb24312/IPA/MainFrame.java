@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.io.File;
+import java.io.IOException;
 
 class MainFrame extends JFrame {
     //region The components
@@ -18,11 +22,33 @@ class MainFrame extends JFrame {
         private JTextField outputField;
     //endregion
 
+    private Font font;
+
     MainFrame (String title, Dimension size){
         super(title);
 
         setSize(size);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        //region Font setup
+        File fontFile = new File(getClass().getResource("/fonts/DejaVuSans.ttf").getFile().replaceAll("%20", " "));
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(11.5f);
+
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            font = null;
+            System.exit(0);
+        }
+
+        addMouseWheelListener(new MouseAdapter() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                font = font.deriveFont((float) font.getSize()-e.getWheelRotation());
+                setFontAll(font);
+            }
+        });
+        //endregion
 
         //region Main panel setup
         panel = new JPanel(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -52,6 +78,10 @@ class MainFrame extends JFrame {
         outputFieldLabel = new JLabel("The output will appear here");
         outputField = new JTextField(20);
         outputField.setEditable(false);
+
+
+        System.out.println(fontFile.exists());
+
         outputPanel.add(outputFieldLabel);
         outputPanel.add(outputField);
         //endregion
@@ -60,10 +90,17 @@ class MainFrame extends JFrame {
         submit = new JButton("Submit");
         submit.addActionListener(l -> {
             String[] inputs = inputField.getText().toLowerCase().split(" ");
-            StringBuilder output = new StringBuilder("\u0000");
+            StringBuilder output = new StringBuilder();
 
             for (String input : inputs) {
-                output.append(IPAConverter.symbol(IPAConverter.toKey(input)));
+                try {
+                    char symbol = IPAConverter.symbol(IPAConverter.toKey(input));
+                    if(symbol!='\u0000'){
+                        output.append(symbol);
+                    } else output.append('*');
+                } catch (IllegalArgumentException e){
+                    output.append('*');
+                }
             }
 
             outputField.setText(output.toString());
@@ -71,5 +108,15 @@ class MainFrame extends JFrame {
         });
         submitPanel.add(submit);
         //endregion
+
+        setFontAll(font);
+    }
+
+    private void setFontAll(Font f){
+        inputFieldLabel.setFont(f);
+        inputField.setFont(f);
+        submit.setFont(f);
+        outputFieldLabel.setFont(f);
+        outputField.setFont(f);
     }
 }
