@@ -1,7 +1,5 @@
 package io.github.vkb24312.IPA;
 
-import java.util.Arrays;
-
 class IPAConverter {
 
     /**
@@ -103,21 +101,23 @@ class IPAConverter {
                     if (parts[1].equals(suprasegmentalsShortcuts[i])) out[2] = i;
                 }
                 break;
-            case "d":
-                out[1] = 1;
+            case "ss":
+                out[1] = 2;
 
                 for (int i = 0; i < superscriptsShortcuts.length; i++) {
                     if (parts[1].equals(superscriptsShortcuts[i])) out[2] = i;
                 }
                 break;
-            default:
-                out[1] = 2;
+            case "d":
+                out[1] = 1;
 
                 for (int i = 0; i < diacriticsShortcuts.length; i++) {
                     if (parts[1].equals(diacriticsShortcuts[i])) out[2] = i;
                 }
 
                 break;
+            default:
+                throw new IllegalArgumentException("Input " + input + " was not recognized");
         }
 
         return out;

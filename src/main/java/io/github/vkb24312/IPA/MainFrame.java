@@ -6,7 +6,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,11 +17,13 @@ class MainFrame extends JFrame {
         private JTextField inputField;
     private JPanel submitPanel;
         private JButton submit;
+        private JCheckBox jcb;
     private JPanel outputPanel;
         private JLabel outputFieldLabel;
         private JTextField outputField;
     //endregion
 
+    private boolean auto;
     private Font font;
 
     MainFrame (String title, Dimension size){
@@ -70,7 +71,14 @@ class MainFrame extends JFrame {
         inputField = new JTextField(20);
         inputField.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e) { if(e.getKeyChar()==KeyEvent.VK_ENTER) submit.doClick(); }
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+
+                if(e.getKeyChar()==KeyEvent.VK_ENTER) submit.doClick();
+
+                if (auto) MainFrame.this.updateOutput();
+            }
+
         });
         inputPanel.add(inputFieldLabel);
         inputPanel.add(inputField);
@@ -87,25 +95,14 @@ class MainFrame extends JFrame {
 
         //region Submit panel setup
         submit = new JButton("Submit");
-        submit.addActionListener(l -> {
-            String[] inputs = inputField.getText().toLowerCase().split(" ");
-            StringBuilder output = new StringBuilder();
+        submit.addActionListener(l -> updateOutput());
 
-            for (String input : inputs) {
-                try {
-                    char symbol = IPAConverter.symbol(IPAConverter.toKey(input));
-                    if(symbol!='\u0000'){
-                        output.append(symbol);
-                    } else output.append('*');
-                } catch (IllegalArgumentException e){
-                    output.append('*');
-                }
-            }
-
-            outputField.setText(output.toString());
-            outputFieldLabel.setText("Double click text to select");
-        });
+        jcb = new JCheckBox("Auto-submit on?");
+        jcb.setSelected(false);
+        auto = jcb.isSelected();
+        jcb.addActionListener(e -> auto = jcb.isSelected());
         submitPanel.add(submit);
+        submitPanel.add(jcb);
         //endregion
 
         setFontAll(font);
@@ -115,7 +112,27 @@ class MainFrame extends JFrame {
         inputFieldLabel.setFont(f);
         inputField.setFont(f);
         submit.setFont(f);
+        jcb.setFont(f);
         outputFieldLabel.setFont(f);
         outputField.setFont(f);
+    }
+
+    private void updateOutput(){
+        String[] inputs = inputField.getText().toLowerCase().split(" ");
+        StringBuilder output = new StringBuilder();
+
+        for (String input : inputs) {
+            try {
+                char symbol = IPAConverter.symbol(IPAConverter.toKey(input));
+                if(symbol!='\u0000'){
+                    output.append(symbol);
+                } else output.append(" ").append(input).append(" ");
+            } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e){
+                output.append(" ").append(input).append(" ");
+            }
+        }
+
+        outputField.setText(output.toString());
+        outputFieldLabel.setText("Double click text to select");
     }
 }
