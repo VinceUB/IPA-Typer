@@ -27,7 +27,7 @@ Each letter is split into separate sections, separated by periods (.), in the or
 
 (For vowels): Height, Backness, Roundedness
 
-Diacritics (e.g. ʲ, ʷ) are a planned feature
+Diacritics, Suprasegmentals: Type, Symbol
 
 In each of these sections, you put an abbreviation for the symbol's name (see below)
 
@@ -94,4 +94,61 @@ If you want to write multiple symbols in one input, just separate them with spac
 | Rounded       | r      |
 | Unrounded   | ur  |
 
-Example: `v.ld.f nc.f.u v.a.n vl.a.f om.f.u v.a.n vl.a.p` will return `vɪnsɛnt`, my name
+### Diacritics & Suprasegmentals
+#### Type
+| Full Name | Abbreviation     |
+| :------------- | :------------- |
+| Suprasegmental       | s       |
+| Superscript   | ss  |
+| Diacritic  | d  |
+
+#### Suprasegmentals
+| Full Name | Abbreviation     |
+| :------------- | :------------- |
+| Primary Stress   | ps  |
+| Secondary Stress   | ss  |
+| Long   | lo  |
+| Half-Long   | hl  |
+| Extra-Short   | es  |
+| Minor (foot) group   | ming   |
+| Major (intonation) group   | majg  |
+| Syllable break   | sb  |
+| Link   | li  | (Links are put between the two letters)
+
+#### Diacritics
+| Full Name | Abbreviation     |
+| :------------- | :------------- |
+| Voiceless       | vl       |
+| Voiced   | v  |
+| More rounded   | mr  |
+| Less rounded   | lr  |
+| Advanced   | ad  |
+| Retracted   | re  |
+| Centralized   | c  |
+| Mid-Centralized   | mc  |
+| Syllabic   | s  |
+| Non-Syllabic  | ns  |
+| Rhoticity   | rh  |
+| Breathy Voiced   | bv  |
+| Creaky Voiced   | cv  |
+| Linguolabial   | ll  |
+| Velarized or Pharyngealized   | vph  |
+| Raised   | ra  |
+| Lowered   | lo  |
+| Advanced Tongue Root   | adt  |
+| Retracted Tongue Root   | ret  |
+| Dental   | d  |
+| Apical   | a  |
+| Laminal   | l  |
+| Nasalized   | n  |
+
+#### Superscripted Letters
+| Full Name | Abbreviation     |
+| :------------- | :------------- |
+| Aspirated       | a       |
+| Labialized   | l  |
+| Palatalized   | p  |
+| Velarized   | v  |
+| Pharyngealized   | ph  |
+
+Example: `s.ps v.ld.f nc.f.u v.a.n s.sb vl.a.f om.f.u v.a.n vl.a.p` will return `ˈvɪn.sɛnt`, my name

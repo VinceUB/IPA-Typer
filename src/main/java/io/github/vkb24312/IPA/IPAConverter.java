@@ -166,8 +166,8 @@ class IPAConverter {
             {'ʰ', 'ʷ', 'ʲ', 'ˠ', 'ˤ', 'ⁿ', 'ˡ', '̚'}
     };
 
-    private final static String[] suprasegmentalsShortcuts = new String[]{"sp", "ss", "lo", "hl", "es", "fg", "ig", "sb", "li"};
-    private final static String[] diacriticsShortcuts = new String[]{"vl", "v", "mr", "lr", "ad", "re", "c", "mc", "s", "ns", "rh", "vb", "vc", "ll", "vph", "ra", "lo", "adt", "ret", "d", "a", "l", "n"};
+    private final static String[] suprasegmentalsShortcuts = new String[]{"sp", "ss", "lo", "hl", "es", "ming", "majg", "sb", "li"};
+    private final static String[] diacriticsShortcuts = new String[]{"vl", "v", "mr", "lr", "ad", "re", "c", "mc", "s", "ns", "rh", "bv", "cv", "ll", "vph", "ra", "lo", "adt", "ret", "d", "a", "l", "n"};
     private final static String[] superscriptsShortcuts = new String[]{"a", "l", "p", "v", "ph", "nr", "lr", "nor"};
     //endregion
 

@@ -1,21 +1,30 @@
 <h1><a id="Vincents_IPA_typer_0"></a>Vincent’s IPA typer</h1>
 <p>This program is supposed to get a coded (abbreviated) message as an input, and output the corresponding symbol</p>
 <h2><a id="How_to_run_the_program_4"></a>How to run the program</h2>
-<p>The GUI is coming soon, but for now you have to use the command prompt.</p>
+<p>Perquisites: You must have at least Java 8 installed</p>
+<p>If you want to do it like a normal person, just double press the jarfile downloaded.</p>
+<p>If you:</p>
 <ol>
-    <li>Open the command prompt (Windows) or terminal (Mac &amp; Linux)</li>
-    <li>Write <code>cd &lt;program directory&gt;</code></li>
-    <li>Write <code>java -jar &lt;jarfile name&gt;.jar</code></li>
+    <li>Don’t have graphics</li>
+    <li>Have something against everything graphical</li>
+    <li>Are a nerd</li>
 </ol>
-<h2><a id="How_to_correctly_input_12"></a>How to correctly input</h2>
+<p>You should:</p>
+<ol>
+    <li>Open the command prompt (Windows) or Terminal (Mac &amp; Linux)</li>
+    <li>If you have graphics available (or like doing things the complicated way), type <code>java -jar &lt;full path of the jarfile&gt;/&lt;the jarfile&gt;.jar console</code></li>
+    <li>Otherwise, type <code>java -jar &lt;full path of the jarfile&gt;/&lt;the jarfile&gt;.jar</code></li>
+    <li>Press enter</li>
+</ol>
+<h2><a id="How_to_correctly_input_21"></a>How to correctly input</h2>
 <p>Each letter is split into separate sections, separated by periods (.), in the order as follows:</p>
 <p>(For consonants): Voicing, Place of articulation, Manner of articulation</p>
 <p>(For vowels): Height, Backness, Roundedness</p>
-<p>Diacritics (e.g. ʲ, ʷ) are a planned feature</p>
+<p>Diacritics, Suprasegmentals: Type, Symbol</p>
 <p>In each of these sections, you put an abbreviation for the symbol’s name (see below)</p>
 <p>If you want to write multiple symbols in one input, just separate them with spaces</p>
-<h3><a id="Consonants_25"></a>Consonants</h3>
-<h4><a id="Voicing_26"></a>Voicing</h4>
+<h3><a id="Consonants_34"></a>Consonants</h3>
+<h4><a id="Voicing_35"></a>Voicing</h4>
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -34,7 +43,7 @@
     </tr>
     </tbody>
 </table>
-<h4><a id="Place_of_Articulation_31"></a>Place of Articulation</h4>
+<h4><a id="Place_of_Articulation_40"></a>Place of Articulation</h4>
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -105,7 +114,7 @@
     </tr>
     </tbody>
 </table>
-<h4><a id="Manner_of_articulation_49"></a>Manner of articulation</h4>
+<h4><a id="Manner_of_articulation_58"></a>Manner of articulation</h4>
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -153,8 +162,8 @@
     </tbody>
 </table>
 <p>*Instead of Sibilant, use Fricative. The program will correct you</p>
-<h3><a id="Vowels_64"></a>Vowels</h3>
-<h4><a id="Height_65"></a>Height</h4>
+<h3><a id="Vowels_73"></a>Vowels</h3>
+<h4><a id="Height_74"></a>Height</h4>
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -201,7 +210,7 @@
     </tr>
     </tbody>
 </table>
-<h4><a id="Backness_75"></a>Backness</h4>
+<h4><a id="Backness_84"></a>Backness</h4>
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -224,7 +233,7 @@
     </tr>
     </tbody>
 </table>
-<h4><a id="Roundedness_81"></a>Roundedness</h4>
+<h4><a id="Roundedness_90"></a>Roundedness</h4>
 <table class="table table-striped table-bordered">
     <thead>
     <tr>
@@ -243,4 +252,209 @@
     </tr>
     </tbody>
 </table>
-<p>Example: <code>v.ld.f nc.f.u v.a.n vl.a.f om.f.u v.a.n vl.a.p</code> will return <code>vɪnsɛnt</code>, my name</p>
+<h3><a id="Diacritics__Suprasegmentals_96"></a>Diacritics &amp; Suprasegmentals</h3>
+<h4><a id="Type_97"></a>Type</h4>
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th style="text-align:left">Full Name</th>
+        <th style="text-align:left">Abbreviation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="text-align:left">Suprasegmental</td>
+        <td style="text-align:left">s</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Superscript</td>
+        <td style="text-align:left">ss</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Diacritic</td>
+        <td style="text-align:left">d</td>
+    </tr>
+    </tbody>
+</table>
+<h4><a id="Suprasegmentals_104"></a>Suprasegmentals</h4>
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th style="text-align:left">Full Name</th>
+        <th style="text-align:left">Abbreviation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="text-align:left">Primary Stress</td>
+        <td style="text-align:left">ps</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Secondary Stress</td>
+        <td style="text-align:left">ss</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Long</td>
+        <td style="text-align:left">lo</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Half-Long</td>
+        <td style="text-align:left">hl</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Extra-Short</td>
+        <td style="text-align:left">es</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Minor (foot) group</td>
+        <td style="text-align:left">ming</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Major (intonation) group</td>
+        <td style="text-align:left">majg</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Syllable break</td>
+        <td style="text-align:left">sb</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Link</td>
+        <td style="text-align:left">li</td>
+    </tr>
+    </tbody>
+</table>
+<h4><a id="Diacritics_117"></a>Diacritics</h4>
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th style="text-align:left">Full Name</th>
+        <th style="text-align:left">Abbreviation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="text-align:left">Voiceless</td>
+        <td style="text-align:left">vl</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Voiced</td>
+        <td style="text-align:left">v</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">More rounded</td>
+        <td style="text-align:left">mr</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Less rounded</td>
+        <td style="text-align:left">lr</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Advanced</td>
+        <td style="text-align:left">ad</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Retracted</td>
+        <td style="text-align:left">re</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Centralized</td>
+        <td style="text-align:left">c</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Mid-Centralized</td>
+        <td style="text-align:left">mc</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Syllabic</td>
+        <td style="text-align:left">s</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Non-Syllabic</td>
+        <td style="text-align:left">ns</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Rhoticity</td>
+        <td style="text-align:left">rh</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Breathy Voiced</td>
+        <td style="text-align:left">bv</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Creaky Voiced</td>
+        <td style="text-align:left">cv</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Linguolabial</td>
+        <td style="text-align:left">ll</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Velarized or Pharyngealized</td>
+        <td style="text-align:left">vph</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Raised</td>
+        <td style="text-align:left">ra</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Lowered</td>
+        <td style="text-align:left">lo</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Advanced Tongue Root</td>
+        <td style="text-align:left">adt</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Retracted Tongue Root</td>
+        <td style="text-align:left">ret</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Dental</td>
+        <td style="text-align:left">d</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Apical</td>
+        <td style="text-align:left">a</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Laminal</td>
+        <td style="text-align:left">l</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Nasalized</td>
+        <td style="text-align:left">n</td>
+    </tr>
+    </tbody>
+</table>
+<h4><a id="Superscripted_Letters_144"></a>Superscripted Letters</h4>
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th style="text-align:left">Full Name</th>
+        <th style="text-align:left">Abbreviation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="text-align:left">Aspirated</td>
+        <td style="text-align:left">a</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Labialized</td>
+        <td style="text-align:left">l</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Palatalized</td>
+        <td style="text-align:left">p</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Velarized</td>
+        <td style="text-align:left">v</td>
+    </tr>
+    <tr>
+        <td style="text-align:left">Pharyngealized</td>
+        <td style="text-align:left">ph</td>
+    </tr>
+    </tbody>
+</table>
+<p>Example: <code>s.ps v.ld.f nc.f.u v.a.n s.sb vl.a.f om.f.u v.a.n vl.a.p</code> will return <code>ˈvɪn.sɛnt</code>, my name</p>
