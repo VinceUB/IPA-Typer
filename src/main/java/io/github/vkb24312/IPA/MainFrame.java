@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 class MainFrame extends JFrame {
     //region The components
@@ -33,9 +34,13 @@ class MainFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //region Font setup
-        InputStream fontInputStream = getClass().getClassLoader().getResourceAsStream("fonts/DejaVuSans.ttf");
-
+        Properties properties = new Properties();
         try {
+            InputStream propertyStream = getClass().getClassLoader().getResourceAsStream("properties.properties");
+            System.out.println(propertyStream);
+            properties.load(propertyStream);
+            InputStream fontInputStream = getClass().getClassLoader().getResourceAsStream("fonts/" + properties.getProperty("font"));
+
             font = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(11.5f);
 
         } catch (FontFormatException | IOException e) {
