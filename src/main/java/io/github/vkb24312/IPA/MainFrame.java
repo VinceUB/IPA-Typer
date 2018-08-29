@@ -13,58 +13,51 @@ import java.util.Properties;
 class MainFrame extends JFrame {
     //region The components
     private JPanel panel;
-    private JPanel inputPanel;
-        private JLabel inputFieldLabel;
-        private JTextField inputField;
-    private JPanel submitPanel;
-        private JButton submit;
-        private JCheckBox jcb;
-    private JPanel outputPanel;
-        private JLabel outputFieldLabel;
-        private JTextField outputField;
+        private JPanel inputPanel;
+            private JLabel inputFieldLabel;
+            private JTextField inputField;
+        private JPanel submitPanel;
+            private JButton submit;
+            private JCheckBox jcb;
+        private JPanel outputPanel;
+            private JLabel outputFieldLabel;
+            private JTextField outputField;
     //endregion
 
     private boolean auto;
     private Font font;
+    private Properties properties;
 
     MainFrame (String title, Dimension size){
         super(title);
 
+        try {
+            properties = new Properties();
+            InputStream propertyStream = getClass().getClassLoader().getResourceAsStream("gui.properties");
+            properties.load(propertyStream);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
         setSize(size);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        //region Font setup
-        Properties properties = new Properties();
-        try {
-            InputStream propertyStream = getClass().getClassLoader().getResourceAsStream("properties.properties");
-            System.out.println(propertyStream);
-            properties.load(propertyStream);
-            InputStream fontInputStream = getClass().getClassLoader().getResourceAsStream("fonts/" + properties.getProperty("font"));
+        initFont();
+        initPanel();
+        initInput();
+        initOutput();
+        initSubmit();
 
-            font = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(11.5f);
+        setFontAll(font);
+    }
 
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-            font = null;
-            System.exit(0);
-        }
-
-        addMouseWheelListener(new MouseAdapter() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                font = font.deriveFont((float) font.getSize()-e.getWheelRotation());
-                setFontAll(font);
-            }
-        });
-        //endregion
-
-        //region Main panel setup
+    private void initPanel(){
         panel = new JPanel(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         add(panel);
-        //endregion
+    }
 
-        //region Input panel setup
+    private void initInput(){
         inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.add(inputPanel);
         submitPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -87,18 +80,39 @@ class MainFrame extends JFrame {
         });
         inputPanel.add(inputFieldLabel);
         inputPanel.add(inputField);
-        //endregion
+    }
 
-        //region Output panel setup
+    private void initOutput(){
         outputFieldLabel = new JLabel("The output will appear here");
         outputField = new JTextField(20);
         outputField.setEditable(false);
 
         outputPanel.add(outputFieldLabel);
         outputPanel.add(outputField);
-        //endregion
+    }
 
-        //region Submit panel setup
+    private void initFont(){
+        try {
+            InputStream fontInputStream = getClass().getClassLoader().getResourceAsStream("fonts/" + properties.getProperty("font"));
+
+            font = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(11.5f);
+
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+            font = null;
+            System.exit(0);
+        }
+
+        addMouseWheelListener(new MouseAdapter() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                font = font.deriveFont((float) font.getSize()-e.getWheelRotation());
+                setFontAll(font);
+            }
+        });
+    }
+
+    private void initSubmit(){
         submit = new JButton("Submit");
         submit.addActionListener(l -> updateOutput());
 
@@ -108,9 +122,6 @@ class MainFrame extends JFrame {
         jcb.addActionListener(e -> auto = jcb.isSelected());
         submitPanel.add(submit);
         submitPanel.add(jcb);
-        //endregion
-
-        setFontAll(font);
     }
 
     private void setFontAll(Font f){
