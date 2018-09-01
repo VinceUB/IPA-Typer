@@ -8,9 +8,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,13 +42,17 @@ class MainFrame extends JFrame {
     private boolean auto;
     private Font font;
     private Properties properties;
+    private File AppData;
 
     MainFrame (String title, Dimension size){
         super(title);
 
         try {
+            if(System.getProperty("os.name").toLowerCase().startsWith("win")) AppData = new File(System.getenv("appdata") + "/IPAConverter");
+            else AppData = new File(System.getProperty("user.home") + "/IPAConverter");
+            
             properties = new Properties();
-            InputStream propertyStream = getClass().getClassLoader().getResourceAsStream("gui.properties");
+            FileInputStream propertyStream = new FileInputStream(new File(AppData, "gui.properties"));
             properties.load(propertyStream);
         } catch (IOException e){
             e.printStackTrace();
@@ -111,32 +115,18 @@ class MainFrame extends JFrame {
         });
 
         correctInput.addActionListener(l -> {
-            if(!new File("temp.html").exists()){
-                try {
-                    InputStream inStream = getClass().getClassLoader().getResourceAsStream("READMEs/README.html");
-                    FileOutputStream fos = new FileOutputStream("temp.html");
-
-                    inStream.transferTo(fos);
-
-                    new File("temp.html").deleteOnExit();
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-
-
             try{
                 if(InetAddress.getByName("github.com").isReachable(1000)) {
                     Desktop.getDesktop().browse(new URI("https://github.com/vkb24312/IPA-Converter/blob/master/README.md#how-to-correctly-input"));
                     return;
-                } else outputFieldLabel.setText("No Internet Connection");
+                } else outputFieldLabel.setText("Note: No Internet Connection");
             } catch (IOException | URISyntaxException e) {
-                outputFieldLabel.setText("Something went wrong");
+                outputFieldLabel.setText("Note: No internet connection");
                 e.printStackTrace();
             }
 
             try {
-                Desktop.getDesktop().browse(new File("temp.html").toURI());
+                Desktop.getDesktop().browse(new File(AppData, "READMEs/README.html").toURI());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -223,14 +213,10 @@ class MainFrame extends JFrame {
 
     private void initFont(){
         try {
-            InputStream fontInputStream = getClass().getClassLoader().getResourceAsStream("fonts/" + properties.getProperty("font"));
-
-            font = Font.createFont(Font.TRUETYPE_FONT, fontInputStream).deriveFont(11.5f);
-
+            font = Font.createFont(Font.TRUETYPE_FONT, new File(AppData, "/fonts/" + properties.get("font").toString()))
+                    .deriveFont((Float.parseFloat((String) properties.get("fontSize"))));
         } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-            font = null;
-            System.exit(0);
+                font = new Font(properties.get("font").toString(), Font.PLAIN, (int) Float.parseFloat((String) properties.get("fontSize")));
         }
 
         addMouseWheelListener(new MouseAdapter() {
@@ -238,6 +224,12 @@ class MainFrame extends JFrame {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 font = font.deriveFont((float) font.getSize()-e.getWheelRotation());
                 setFontAll(font);
+                try{
+                    properties.setProperty("fontSize", Float.toString((float) font.getSize()));
+                    properties.store(new FileWriter(new File(AppData, "gui.properties")), "null");
+                } catch (IOException e1){
+                    e1.printStackTrace();
+                }
             }
         });
     }
@@ -247,9 +239,18 @@ class MainFrame extends JFrame {
         submit.addActionListener(l -> updateOutput());
 
         jcb = new JCheckBox("Auto-submit on?");
-        jcb.setSelected(false);
-        auto = jcb.isSelected();
-        jcb.addActionListener(e -> auto = jcb.isSelected());
+        auto = Boolean.parseBoolean((String)properties.get("auto"));
+        jcb.setSelected(auto);
+        jcb.addActionListener(e -> {
+            auto = jcb.isSelected();
+            properties.setProperty("auto", Boolean.toString(auto));
+    
+            try {
+                properties.store(new FileWriter(new File(AppData, "gui.properties")), null);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
         submitPanel.add(submit);
         submitPanel.add(jcb);
     }
