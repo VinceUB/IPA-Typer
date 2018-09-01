@@ -159,3 +159,37 @@ If you want to write multiple symbols in one input, just separate them with spac
 | Pharyngealized   | ph  |
 
 Example: `s.ps v.ld.f nc.f.u v.a.n s.sb vl.a.f om.f.u v.a.n vl.a.p` will return `ˈvɪn.sɛnt`, my name
+
+## FAQ
+
+### What on earth is an IPA? Are you talking about the beer?
+
+The IPA (International Phonetic Alphabet) is an alphabet used by linguists, to make it possible to read in a language without having to study it's writing system(s) for months or years.
+
+You can find it in dictionaries and the sort
+
+## NSFAQAPNAMA (Not so frequently asked questions and problems nobody asked me about)
+
+### The GUI is ugly, how do I change it around?
+
+There are several things you can do:
+
+#### The font is too big/small
+
+The solution is simple. If you scroll your mouse wheel, the font size will change
+
+#### The window is too big/small
+
+Just as in any other program, you can resize the window by dragging the edge of it
+
+#### The font is ugly
+
+1. Locate the Appdata (Windows)/User home (Anything else) folder:
+    1. Windows:
+        1. Press the Window key and R together
+        2. In the prompt that pops up, type `%appdata%\IPAConverter`
+    2. Mac:
+        1. Open Finder
+        2. In the menu bar, press `Go`
+        3. Press `Go to folder`
+        4. Write `~/IPAConverter

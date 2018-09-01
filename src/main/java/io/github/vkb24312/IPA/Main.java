@@ -16,8 +16,8 @@ public class Main {
     public static void main(String... args) throws IOException {
         //region AppData setup
         File AppData;
-        if(System.getProperty("os.name").toLowerCase().startsWith("win")) AppData = new File(System.getenv("appdata") + "/IPAConverter");
-        else AppData = new File(System.getProperty("user.home") + "/IPAConverter");
+        if(System.getProperty("os.name").toLowerCase().startsWith("win")) AppData = new File(System.getenv("appdata") + "/IPATyper");
+        else AppData = new File(System.getProperty("user.home") + "/IPATyper");
         
         if(!AppData.exists() || !AppData.isDirectory()) AppData.mkdirs();
         System.out.println("Appdata is " + AppData.getAbsolutePath());

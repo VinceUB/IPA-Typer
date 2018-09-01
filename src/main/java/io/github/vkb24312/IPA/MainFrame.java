@@ -49,7 +49,7 @@ class MainFrame extends JFrame {
 
         try {
             if(System.getProperty("os.name").toLowerCase().startsWith("win")) AppData = new File(System.getenv("appdata") + "/IPAConverter");
-            else AppData = new File(System.getProperty("user.home") + "/IPAConverter");
+            else AppData = new File(System.getProperty("user.home") + "/IPATyper");
             
             properties = new Properties();
             FileInputStream propertyStream = new FileInputStream(new File(AppData, "gui.properties"));
