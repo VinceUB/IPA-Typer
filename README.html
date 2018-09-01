@@ -470,3 +470,51 @@
     </tbody>
 </table>
 <p>Example: <code>s.ps v.ld.f nc.f.u v.a.n s.sb vl.a.f om.f.u v.a.n vl.a.p</code> will return <code>ˈvɪn.sɛnt</code>, my name</p>
+<h2><a id="FAQ_162"></a>FAQ</h2>
+<h3><a id="What_on_earth_is_an_IPA_Are_you_talking_about_the_beer_164"></a>What on earth is an IPA? Are you talking about the beer?</h3>
+<p>The IPA (International Phonetic Alphabet) is an alphabet used by linguists, to make it possible to read in a language without having to study it’s writing system(s) for months or years.</p>
+<p>You can find it in dictionaries and the sort</p>
+<h2><a id="NSFAQAPNAMA_Not_so_frequently_asked_questions_and_problems_nobody_asked_me_about_170"></a>NSFAQAPNAMA (Not so frequently asked questions and problems nobody asked me about)</h2>
+<h3><a id="The_GUI_is_ugly_how_do_I_change_it_around_172"></a>The GUI is ugly, how do I change it around?</h3>
+<p>There are several things you can do:</p>
+<h4><a id="The_font_is_too_bigsmall_176"></a>The font is too big/small</h4>
+<p>The solution is simple. If you scroll your mouse wheel, the font size will change</p>
+<h4><a id="The_window_is_too_bigsmall_180"></a>The window is too big/small</h4>
+<p>Just as in any other program, you can resize the window by dragging the edge of it</p>
+<h4><a id="The_font_is_ugly_184"></a>The font is ugly</h4>
+<ol>
+    <li>Locate the Appdata (Windows)/User home (Anything else) folder:
+        <ol>
+            <li>Windows:
+                <ol>
+                    <li>Press the Window key and R together</li>
+                    <li>In the prompt that pops up, type <code>%appdata%\IPATyper</code></li>
+                </ol>
+            </li>
+            <li>Mac:
+                <ol>
+                    <li>Open Finder</li>
+                    <li>In the menu bar, press <code>Go</code></li>
+                    <li>Press <code>Go to folder</code></li>
+                    <li>Write <code>~/IPATyper</code></li>
+                </ol>
+            </li>
+            <li>Anything else:
+                <ol>
+                    <li>Find the user home folder</li>
+                    <li>Go to the IPATyper folder</li>
+                </ol>
+            </li>
+        </ol>
+    </li>
+    <li>Open the <code>gui.properties</code> file in a text editor (<code>notepad</code>, <code>textedit</code>, <code>vim</code>, etc.)</li>
+    <li>Find the line that starts with <code>font=</code></li>
+    <li>Change the text after that to your font’s name.</li>
+    <li>If you want to use a TTF file, put the file in the <code>fonts</code> folder, and change the text to the filename</li>
+</ol>
+<h3><a id="X_isnt_working_how_do_I_fix_it_203"></a>X isn’t working, how do I fix it?</h3>
+<p>If a button isn’t responding, or something, try restarting the program. If it fixes itself, it’s probably nothing</p>
+<p>Otherwise, open the program in the command prompt (<code>java -jar &lt;jarfile&gt;.jar</code>), try again, and copy all the output text.</p>
+<p>Once all the text is copied, submit it as a new issue <a href="https://github.com/vkb24312/IPA-Converter/issues">here</a>, or send it as an email to <code>vincent.bechmann@gmail.com</code></p>
+<h3><a id="I_really_really_want_a_feature_but_you_arent_adding_it_211"></a>I really really want a feature, but you aren’t adding it</h3>
+<p>Send me an email (<code>vincent.bechmann@gmail.com</code>) or submit it as an issue <a href="https://github.com/vkb24312/IPA-Converter/issues">here</a></p>

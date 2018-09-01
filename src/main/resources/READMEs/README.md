@@ -187,9 +187,28 @@ Just as in any other program, you can resize the window by dragging the edge of 
 1. Locate the Appdata (Windows)/User home (Anything else) folder:
     1. Windows:
         1. Press the Window key and R together
-        2. In the prompt that pops up, type `%appdata%\IPAConverter`
+        2. In the prompt that pops up, type `%appdata%\IPATyper`
     2. Mac:
         1. Open Finder
         2. In the menu bar, press `Go`
         3. Press `Go to folder`
-        4. Write `~/IPAConverter
+        4. Write `~/IPATyper`
+    3. Anything else:
+        1. Find the user home folder
+        2. Go to the IPATyper folder
+2. Open the `gui.properties` file in a text editor (`notepad`, `textedit`, `vim`, etc.)
+3. Find the line that starts with `font=`
+4. Change the text after that to your font's name.
+5. If you want to use a TTF file, put the file in the `fonts` folder, and change the text to the filename
+
+### X isn't working, how do I fix it?
+
+If a button isn't responding, or something, try restarting the program. If it fixes itself, it's probably nothing
+
+Otherwise, open the program in the command prompt (`java -jar <jarfile>.jar`), try again, and copy all the output text.
+
+Once all the text is copied, submit it as a new issue [here](https://github.com/vkb24312/IPA-Converter/issues), or send it as an email to `vincent.bechmann@gmail.com`
+
+### I really really want a feature, but you aren't adding it
+
+Send me an email (`vincent.bechmann@gmail.com`) or submit it as an issue [here](https://github.com/vkb24312/IPA-Converter/issues)
