@@ -27,6 +27,9 @@ class MainFrame extends JFrame {
                 private JMenuItem IPAChartSpecials;
             private JMenuItem wikipediaHelp;
             private JMenuItem correctInput;
+        private JMenu input;
+            private JRadioButtonMenuItem logical;
+            private JRadioButtonMenuItem xSampa;
     private JPanel panel;
         private JPanel inputPanel;
             private JLabel inputFieldLabel;
@@ -43,15 +46,20 @@ class MainFrame extends JFrame {
     private Font font;
     private Properties properties;
     private File AppData;
+    private int inputType;
+    
+    public final static int INPUT_TYPE_VINCENTCODE = 0;
+    public final static int INPUT_TYPE_XSAMPA = 1;
 
     MainFrame (String title, Dimension size){
         super(title);
 
         try {
-            if(System.getProperty("os.name").toLowerCase().startsWith("win")) AppData = new File(System.getenv("appdata") + "/IPAConverter");
+            if(System.getProperty("os.name").toLowerCase().startsWith("win")) AppData = new File(System.getenv("appdata") + "/IPATyper");
             else AppData = new File(System.getProperty("user.home") + "/IPATyper");
             
             properties = new Properties();
+            if(!new File(AppData, "gui.properties").exists()) new File(AppData, "gui.properties").createNewFile();
             FileInputStream propertyStream = new FileInputStream(new File(AppData, "gui.properties"));
             properties.load(propertyStream);
         } catch (IOException e){
@@ -72,9 +80,10 @@ class MainFrame extends JFrame {
     }
 
     private void initMenuBar(){
-        //region Create everything
         menuBar = new JMenuBar();
-
+        
+        //region Reference menu bar
+        //region Create everything
         reference = new JMenu("Reference");
 
         IPAChart = new JMenu("IPA Chart");
@@ -102,8 +111,6 @@ class MainFrame extends JFrame {
 
         menuBar.add(reference);
         //endregion
-
-        setJMenuBar(menuBar);
 
         //region Set action listeners
         wikipediaHelp.addActionListener(l -> {
@@ -169,6 +176,45 @@ class MainFrame extends JFrame {
             }
         });
         //endregion
+        //endregion
+        
+        //region Input menu bar
+        //region Create everything
+        input = new JMenu("Input type");
+        logical = new JRadioButtonMenuItem("Vincent's input (Suggested)");
+        xSampa = new JRadioButtonMenuItem("X-SAMPA input (Use if experienced in X-SAMPA)");
+        ButtonGroup inputGroup = new ButtonGroup();
+        inputGroup.add(logical);
+        inputGroup.add(xSampa);
+        input.add(logical);
+        input.add(xSampa);
+        menuBar.add(input);
+        //endregion
+        
+        //region ActionListeners
+        logical.addActionListener(l -> {
+            inputType = INPUT_TYPE_VINCENTCODE;
+            properties.setProperty("input", Integer.toString(inputType));
+            try {
+                properties.store(new FileWriter(new File(AppData, "gui.properties")), null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    
+        xSampa.addActionListener(l -> {
+            inputType = INPUT_TYPE_XSAMPA;
+            properties.setProperty("input", Integer.toString(inputType));
+            try {
+                properties.store(new FileWriter(new File(AppData, "gui.properties")), null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        //endregion
+        //endregion
+        
+        setJMenuBar(menuBar);
     }
 
     private void initPanel(){
@@ -178,6 +224,15 @@ class MainFrame extends JFrame {
     }
 
     private void initInput(){
+        inputType = Integer.parseInt((String) properties.get("input"));
+        if(inputType==0){
+            logical.setSelected(true);
+        } else if(inputType==1){
+            xSampa.setSelected(true);
+        } else {
+            logical.doClick();
+        }
+        
         inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.add(inputPanel);
         submitPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -213,7 +268,7 @@ class MainFrame extends JFrame {
 
     private void initFont(){
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File(AppData, "/fonts/" + properties.get("font").toString()))
+            font = Font.createFont(Font.TRUETYPE_FONT, new File(AppData, "/fonts/" + properties.getProperty("font")))
                     .deriveFont((Float.parseFloat((String) properties.get("fontSize"))));
         } catch (FontFormatException | IOException e) {
                 font = new Font(properties.get("font").toString(), Font.PLAIN, (int) Float.parseFloat((String) properties.get("fontSize")));
@@ -265,12 +320,18 @@ class MainFrame extends JFrame {
     }
 
     private void updateOutput(){
-        String[] inputs = inputField.getText().toLowerCase().split(" ");
+        String[] inputs = inputField.getText().split(" ");
         StringBuilder output = new StringBuilder();
 
         for (String input : inputs) {
             try {
-                char symbol = IPAConverter.symbol(IPAConverter.toKey(input));
+                char symbol;
+                if (inputType == INPUT_TYPE_VINCENTCODE) {
+                    symbol = IPAConverter.keyConvert(IPAConverter.toKey(input));
+                } else if (inputType == INPUT_TYPE_XSAMPA){
+                    symbol = IPAConverter.xSampaConvert(input);
+                } else symbol = '\u0000';
+                
                 if(symbol!='\u0000'){
                     output.append(symbol);
                 } else output.append(" ").append(input).append(" ");

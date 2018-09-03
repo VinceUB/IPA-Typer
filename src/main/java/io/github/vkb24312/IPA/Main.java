@@ -1,5 +1,3 @@
-//Test comment
-
 package io.github.vkb24312.IPA;
 
 import javax.swing.*;
@@ -16,92 +14,68 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String... args) throws IOException {
-        //region AppData setup
-        File AppData;
-        if(System.getProperty("os.name").toLowerCase().startsWith("win")) AppData = new File(System.getenv("appdata") + "/IPATyper");
-        else AppData = new File(System.getProperty("user.home") + "/IPATyper");
+        //region get AppData
+        File appData;
+        if(System.getProperty("os.name").toLowerCase().startsWith("win")) appData = new File(System.getenv("appdata"), "IPATyper");
+        else appData = new File(System.getProperty("user.home"));
+        if(!appData.exists()) appData.mkdirs();
+        //endregion
         
-        if(!AppData.exists() || !AppData.isDirectory()) AppData.mkdirs();
-        System.out.println("Appdata is " + AppData.getAbsolutePath());
-        
-        //region GUI properties setup
-        File guiProperties = new File(AppData, "gui.properties");
-        if(!guiProperties.exists()) {
-            InputStream guiPropertyInputStream = Main.class.getClassLoader().getResourceAsStream("gui.properties");
-            FileOutputStream guiPropertyFileOutputStream = new FileOutputStream(guiProperties);
-            
-            guiPropertyInputStream.transferTo(guiPropertyFileOutputStream);
+        //region Check if properties file exists. If it doesn't, create it. If it does, fix it
+        File propertiesFile = new File(appData, "gui.properties");
+        if(!propertiesFile.exists()) {
+            getDefaults().store(new FileWriter(propertiesFile), null);
+        } else {
+            Properties userProperties = new Properties();
+            userProperties.load(new FileInputStream(propertiesFile));
+            userProperties = getFixed(userProperties, getDefaults());
+            userProperties.store(new FileWriter(propertiesFile), null);
         }
-        
-        //region Check if properties are corrupted, and fix them if they are
-        Properties defaults = new Properties();
-        defaults.load(Main.class.getClassLoader().getResourceAsStream("gui.properties"));
-
         Properties userProperties = new Properties();
-        userProperties.load(new FileInputStream(guiProperties));
-        
-        defaults.forEach((k, v) -> {
-            if(userProperties.getProperty((String) k)==null){
-                userProperties.setProperty((String) k, (String) v);
-            }
-        });
-        userProperties.store(new FileWriter(guiProperties), null);
-        
-        System.out.println("GUI property file is " + guiProperties.getAbsolutePath());
-        //endregion
+        userProperties.load(new FileInputStream(propertiesFile));
         //endregion
         
-        //region Fonts setup
-        File fontsFolder = new File(AppData, "fonts");
-        if(!fontsFolder.exists() || !fontsFolder.isDirectory()) fontsFolder.mkdirs();
-        File chosenFont = new File(fontsFolder, (String) userProperties.get("font"));
-        File defaultFont = new File(fontsFolder, (String) defaults.get("font"));
-        
-        if(!defaultFont.exists()) {
-            FileOutputStream fontFileStream = new FileOutputStream(defaultFont);
-            Main.class.getClassLoader().getResourceAsStream("fonts/" + defaults.get("font")).transferTo(fontFileStream);
-        }
-        
-        if(!chosenFont.exists()) {
-            Font[] allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-            
-            boolean fontExist = false;
-            for (Font font : allFonts) {
-                if(font.getName().equals(userProperties.get("font"))) fontExist = true;
-            }
-            
-            if(!fontExist) {
-                userProperties.setProperty("font", defaults.getProperty("font"));
-                userProperties.store(new FileWriter(guiProperties), "File \"" + chosenFont + "\" doesn't exist, so we changed your chosen font to the default");
+        //region Make sure the fonts are valid. If they aren't, fix them
+        if(userProperties.getProperty("font").toLowerCase().endsWith(".ttf")){
+            if(!new File(appData, "fonts/" + userProperties.getProperty("font")).exists()){
+                userProperties.setProperty("font", "DejaVuSans.ttf");
+                
+                if(!new File(appData, "fonts/" + userProperties.getProperty("font")).exists()){
+                    if(!new File(appData, "fonts/").exists() || !new File(appData, "fonts/").isDirectory()) new File(appData, "fonts/").mkdirs();
+                    InputStream fontInputStream = Main.class.getClassLoader().getResourceAsStream("fonts/DejaVuSans.ttf");
+                    FileOutputStream fontOutputStream = new FileOutputStream(new File(appData, "fonts/DejaVuSans.ttf"));
+                    fontInputStream.transferTo(fontOutputStream);
+                    fontInputStream.close();
+                    fontOutputStream.close();
+                }
             }
         }
-        
         //endregion
         
-        //region README setup
-        File ReadmesDir = new File(AppData, "READMEs");
-        if(!ReadmesDir.exists() || !ReadmesDir.isDirectory()){
-            ReadmesDir.mkdirs();
-        }
-        File mdReadme = new File(AppData, "READMEs/README.md");
-        File htmlReadme = new File(AppData, "READMEs/README.html");
-
-        if(!mdReadme.exists()){
-            InputStream readmeInputStream = Main.class.getClassLoader().getResourceAsStream("READMEs/README.md");
-            FileOutputStream readmeOutputStream = new FileOutputStream(mdReadme);
-
-            readmeInputStream.transferTo(readmeOutputStream);
-        }
-
+        //region Create README files if they don't exist
+        File readMeDir = new File(appData, "READMEs");
+        if(!readMeDir.exists() || !readMeDir.isDirectory()) readMeDir.mkdirs();
+        
+        File htmlReadme = new File(readMeDir, "README.html");
+        File mdReadme = new File(readMeDir, "README.md");
+    
         if(!htmlReadme.exists()){
-            InputStream readmeInputStream = Main.class.getClassLoader().getResourceAsStream("READMEs/README.html");
-            FileOutputStream readmeOutputStream = new FileOutputStream(htmlReadme);
-
-            readmeInputStream.transferTo(readmeOutputStream);
+            InputStream is = Main.class.getClassLoader().getResourceAsStream("READMEs/README.html");
+            FileOutputStream fos = new FileOutputStream(htmlReadme);
+            is.transferTo(fos);
+            is.close();
+            fos.close();
+        }
+        
+        if(!mdReadme.exists()){
+            InputStream is = Main.class.getClassLoader().getResourceAsStream("READMEs/README.md");
+            FileOutputStream fos = new FileOutputStream(mdReadme);
+            is.transferTo(fos);
+            is.close();
+            fos.close();
         }
         
         //endregion
-        
         
         if(GraphicsEnvironment.isHeadless() || (args.length>0 && args[0].equals("console"))) {
             System.out.println(fromConsole());
@@ -128,7 +102,7 @@ public class Main {
 
         for (String in : input) {
             try {
-                char symbol = IPAConverter.symbol(IPAConverter.toKey(in));
+                char symbol = IPAConverter.keyConvert(IPAConverter.toKey(in));
                 if (symbol == '\u0000') output.append("*");
                 else output.append(symbol);
             } catch (IllegalArgumentException e) {
@@ -137,5 +111,16 @@ public class Main {
         }
 
         return output.toString();
+    }
+    
+    private static Properties getDefaults() throws IOException{
+        Properties defaults = new Properties();
+        defaults.load(Main.class.getClassLoader().getResourceAsStream("gui.properties"));
+        return defaults;
+    }
+    
+    private static Properties getFixed(Properties toFix, Properties defaults){
+        defaults.forEach(toFix::putIfAbsent);
+        return toFix;
     }
 }
