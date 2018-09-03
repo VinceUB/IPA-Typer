@@ -201,6 +201,14 @@ Just as in any other program, you can resize the window by dragging the edge of 
 4. Change the text after that to your font's name.
 5. If you want to use a TTF file, put the file in the `fonts` folder, and change the text to the filename
 
+### I'm not comfortable using your default input, how do I switch to X-SAMPA?
+
+In the menu bar, there is an input section. There is the option for X-SAMPA there
+
+### The auto-submit isn't submitting
+
+Press space. Otherwise, see "X isn't working, how do I fix it?"
+
 ### X isn't working, how do I fix it?
 
 If a button isn't responding, or something, try restarting the program. If it fixes itself, it's probably nothing
